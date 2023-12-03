@@ -3,7 +3,7 @@ package day1
 import utils.InputReader.readFileAsList
 
 fun main() {
-    val input = readFileAsList("Day1.txt").filter { it.isNotBlank() }
+    val input = readFileAsList("Day1.txt")
     val part1 = part1(input)
     val part2 = part2(input)
     println("Part1 result: $part1 Part2 result: $part2")

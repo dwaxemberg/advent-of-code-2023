@@ -1,13 +1,13 @@
 package day2
 
-import utils.InputReader
+import utils.InputReader.readFileAsList
 
 private const val NUM_RED = 12
 private const val NUM_GREEN = 13
 private const val NUM_BLUE = 14
 
 fun main() {
-    val input = InputReader.readFileAsList("Day2.txt").filter { it.isNotBlank() }
+    val input = readFileAsList("Day2.txt")
 
     val part1 = input.map(::parseGame).filter {
         it.red <= NUM_RED && it.green <= NUM_GREEN && it.blue <= NUM_BLUE
