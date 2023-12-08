@@ -1,12 +1,10 @@
 package day5
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import utils.InputReader.readFileAsList
+import utils.mapAsyncIndexed
 
 
 private lateinit var seeds: List<Long>
@@ -64,7 +62,7 @@ fun part2(input: List<String>): Long {
     println("humidity to location:    $humidityToLocation")
 
     return runBlocking {
-        val bruteForce = withContext(Dispatchers.IO) {
+        val bruteForce = withContext(Dispatchers.Default) {
             seedRanges.mapAsyncIndexed { index, range ->
                 println("SeedRange: $index of ${seedRanges.size}")
                 range.minOf { seed ->
@@ -84,10 +82,6 @@ fun part2(input: List<String>): Long {
 //        search(it)
 //    }
 }
-
-private suspend fun <T, R> List<T>.mapAsyncIndexed(
-    mapper: suspend (Int, T) -> R
-): List<R> = coroutineScope { mapIndexed { index, it -> async { mapper(index, it) } }.awaitAll() }
 
 fun search(mapping: RangeMap): Long? {
     for (i in mapping.destination..<mapping.destination + mapping.range) {
