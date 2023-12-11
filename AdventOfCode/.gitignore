@@ -40,3 +40,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+## Ignore the example inputs I use for testing.
+*Example.txt
