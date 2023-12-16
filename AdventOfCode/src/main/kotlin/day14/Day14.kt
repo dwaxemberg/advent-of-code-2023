@@ -4,7 +4,7 @@ import utils.InputReader.readFileAsList
 import utils.print
 
 fun main() {
-    val input = readFileAsList("Example.txt")
+    val input = readFileAsList("Day14.txt")
 
     println("Part 1: ${part1(input)}, Part 2: ${part2(input)}")
 }
@@ -27,26 +27,16 @@ fun part1(input: List<String>): Int {
 
 fun part2(input: List<String>): Int {
     val rockMap = input.map { it.toMutableList() }.toMutableList()
-    println("Rock Map:")
-    rockMap.print()
-    println()
-    val startTime = System.currentTimeMillis()
-    println("Start time: $startTime")
     rollCycles(rockMap, 1_000_000_000)
-    println("Load:")
     return rockMap.mapIndexed { r, rockRow ->
         rockRow.sumOf {
             if (it == 'O') rockMap.size - r else 0
         }
-    }.also { println(it) }.sum().also {
-        val stopTime = System.currentTimeMillis()
-        println("Stop time: $stopTime")
-        println("Duration: ${stopTime - startTime} ms")
-    }
+    }.sum()
 }
 
 private fun rollCycles(input: MutableList<MutableList<Char>>, numCycles: Int) {
-    val previousCycles = mutableSetOf<List<List<Char>>>()
+    val previousCycles = LinkedHashSet<List<List<Char>>>()
     for (i in 0..<numCycles) {
         rollNorth(input)
         rollWest(input)
@@ -56,8 +46,12 @@ private fun rollCycles(input: MutableList<MutableList<Char>>, numCycles: Int) {
         val cycle = input.map { it.toList() }.toList()
         if (cycle in previousCycles) {
             println("Encountered Loop on cycle: ${i + 1}, previous: ${previousCycles.size}")
-            cycle.print()
-            val cycleOffset = previousCycles.size - (numCycles % i)
+            val cycleIndex = previousCycles.indexOf(cycle)
+            println("Cycle index: $cycleIndex")
+            val cycleLength = (previousCycles.size - cycleIndex)
+            println("Cycle length: $cycleLength")
+            // Add 1 to cycle size because we've already rolled this cycle, but it's not added to the previous.
+            val cycleOffset = (numCycles - ((previousCycles.size + 1) - cycleLength)) % cycleLength
             println("Cycling: $cycleOffset")
             for (j in 0..<cycleOffset) {
                 rollNorth(input)

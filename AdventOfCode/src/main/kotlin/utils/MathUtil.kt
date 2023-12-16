@@ -20,3 +20,7 @@ fun lcm(a: Long, b: Long): Long {
     }
     return maxLcm
 }
+
+fun Double.format(scale: Int) = "%.${scale}f".format(this)
+
+fun Double.pct(decimals: Int = 1) = (this * 100).format(decimals)
