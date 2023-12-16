@@ -9,6 +9,8 @@ object InputReader {
     fun readFileAsMatrix(name: String): Array<Array<Char>> =
         readFileAsList(name).map { it.toCharArray().toTypedArray() }.toTypedArray()
 
+    fun readFileAsString(name: String): String = readFile(name).trim()
+
     private fun readFile(name: String) = javaClass.getResource("/input/$name")?.readText()
         ?: throw IllegalArgumentException("Unable to find input file: $name")
 
